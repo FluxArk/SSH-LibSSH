@@ -2,7 +2,7 @@ use SSH::LibSSH;
 
 # To try this out, run some local HTTP server on your machine. If it's on
 # port 8080 then do:
-#   perl6 examples/reverse-forward.p6 your.ssh.host youruser 8888 8080
+#   raku examples/reverse-forward.raku your.ssh.host youruser 8888 8080
 # Now on that remote host, do:
 #   curl http://127.0.0.1:8888/
 # And it will tunnel the request to your local HTTP server.

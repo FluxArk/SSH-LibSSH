@@ -2,7 +2,7 @@ use SSH::LibSSH;
 
 # To try this out, connect to an SSH server and put in a forwarding target and
 # a local port to listen on:
-#   perl6 examples/forward.p6 your.ssh.host youruser www.bash.org 80 8888
+#   raku examples/forward.raku your.ssh.host youruser www.bash.org 80 8888
 # You can then access it through the tunnel:
 #   curl -v -H "Host: www.bash.org" http://127.0.0.1:8888/
 

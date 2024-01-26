@@ -1,2 +1,2 @@
-.precomp
-*.swp
+.precomp/
+/SSH-LibSSH-*

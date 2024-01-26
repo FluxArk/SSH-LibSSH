@@ -1,16 +1,29 @@
 {
-    "perl"          : "6.*",
-    "name"          : "SSH::LibSSH",
-    "version"       : "0.9.1",
-    "description"   : "Asynchronous binding for libssh; client-only and limited functionality so far.",
-    "author"        : "Jonathan Worthington <jnthn@jnthn.net>",
-    "license"       : "Artistic-2.0",
-    "build-depends" : [ "LWP::Simple" ],
-    "depends"       : [ "Concurrent::Progress" ],
-    "provides"      : {
-		"SSH::LibSSH"      : "lib/SSH/LibSSH.pm6",
-		"SSH::LibSSH::Raw" : "lib/SSH/LibSSH/Raw.pm6"
-    },
-    "resources"     : [ "ssh.dll", "libeay32.dll", "msvcr110.dll" ],
-    "source-url"    : "https://github.com/jnthn/p6-ssh-libssh.git"
+  "auth": "zef:raku-community-modules",
+  "author": "Jonathan Worthington <jnthn@jnthn.net>",
+  "build-depends": [
+    "LWP::Simple"
+  ],
+  "depends": [
+    "Concurrent::Progress"
+  ],
+  "description": "Asynchronous binding for libssh; client-only and limited functionality",
+  "license": "Artistic-2.0",
+  "name": "SSH::LibSSH",
+  "perl": "6.d",
+  "provides": {
+    "SSH::LibSSH": "lib/SSH/LibSSH.rakumod",
+    "SSH::LibSSH::Raw": "lib/SSH/LibSSH/Raw.rakumod"
+  },
+  "resources": [
+    "ssh.dll",
+    "libeay32.dll",
+    "msvcr110.dll"
+  ],
+  "source-url": "https://github.com/raku-community-modules/SSH-LibSSH.git",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.9.1"
 }
