@@ -1,4 +1,6 @@
 Revision history for SSH-LibSSH
 
 {{$NEXT}}
+
+0.9.2  2024-11-09T11:20:35+01:00
     - Initial version as a Raku Community module
