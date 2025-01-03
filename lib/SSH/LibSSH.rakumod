@@ -776,7 +776,8 @@ class SSH::LibSSH {
                         given $state {
                             when Initial {
                                 check-status-code($data);
-                                my $header = "C$mode $to-send.elems() \n";
+                                my $file-name = $local-path.IO.basename;
+                                my $header = "C$mode $to-send.elems() $file-name\n";
                                 $state = SentHeader;
                                 whenever $channel.write($header.encode('utf8-c8')) {}
                             }
