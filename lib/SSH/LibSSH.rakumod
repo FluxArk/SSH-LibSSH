@@ -263,7 +263,7 @@ class SSH::LibSSH {
                                     $remove = True;
                                     self!connect-auth-server($v, $scheduler);
                                 }
-                                elsif now - $start-time > $!timeout {
+                                elsif $!timeout && now - $start-time > $!timeout {
                                     $remove = True;
                                     self!teardown-session();
                                     $v.break(X::SSH::LibSSH::Error.new(message => 'Connection timed out'));
