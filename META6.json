@@ -1,5 +1,5 @@
 {
-  "auth": "zef:raku-community-modules",
+  "auth": "zef:demayl",
   "author": "Jonathan Worthington <jnthn@jnthn.net>",
   "build-depends": [
     "LWP::Simple"
@@ -20,10 +20,16 @@
     "libeay32.dll",
     "msvcr110.dll"
   ],
-  "source-url": "https://github.com/raku-community-modules/SSH-LibSSH.git",
+  "source-url": "https://github.com/FluxArk/SSH-LibSSH.git",
   "tags": [
+	  "ssh",
+      "libssh"
   ],
   "test-depends": [
   ],
+  "support" : {
+      "bugtracker" : "https://github.com/FluxArk/SSH-LibSSH/issues",
+      "source" : "https://github.com/FluxArk/SSH-LibSSH.git"
+  },
   "version": "0.9.2"
 }
