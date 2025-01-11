@@ -263,7 +263,7 @@ class SSH::LibSSH {
                                     $remove = True;
                                     self!connect-auth-server($v, $scheduler);
                                 }
-                                elsif now - $start-time > $!timeout {
+                                elsif $!timeout && now - $start-time > $!timeout {
                                     $remove = True;
                                     self!teardown-session();
                                     $v.break(X::SSH::LibSSH::Error.new(message => 'Connection timed out'));
@@ -776,7 +776,8 @@ class SSH::LibSSH {
                         given $state {
                             when Initial {
                                 check-status-code($data);
-                                my $header = "C$mode $to-send.elems() \n";
+                                my $file-name = $local-path.IO.basename;
+                                my $header = "C$mode $to-send.elems() $file-name\n";
                                 $state = SentHeader;
                                 whenever $channel.write($header.encode('utf8-c8')) {}
                             }
