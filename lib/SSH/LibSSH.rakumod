@@ -1003,6 +1003,24 @@ class SSH::LibSSH {
             $p
         }
 
+        method send_signal(Str $sig) {
+            my $p = Promise.new;
+            my $v = $p.vow;
+            get-event-loop().run-on-loop: {
+
+                with $!channel-handle {
+                    error-check($!session.session-handle, ssh_channel_request_send_signal($_, $sig));
+                }
+                $v.keep(True);
+                CATCH {
+                    default {
+                        $v.break($_);
+                    }
+                }
+            }
+            $p;
+        }
+
         method close() {
             my $p = Promise.new;
             my $v = $p.vow;
