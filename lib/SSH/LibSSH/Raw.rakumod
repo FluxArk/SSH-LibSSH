@@ -158,3 +158,4 @@ sub ssh_channel_accept_forward(SSHSession, int32, CArray[int32]) returns SSHChan
 
 sub ssh_get_error(SSHSession) returns Str is symbol('ssh_get_error')
     is native(&libssh) is export {*}
+sub ssh_channel_get_session(SSHChannel) returns int64 is native(&libssh) is export {*}

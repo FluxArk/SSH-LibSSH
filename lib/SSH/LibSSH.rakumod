@@ -858,6 +858,14 @@ class SSH::LibSSH {
 
         submethod BUILD(SSHChannel :$!channel-handle!, Session :$!session) {}
 
+		method is-open {
+			return ssh_channel_is_open( $!channel-handle );
+		}
+
+		method get-session {
+			return ssh_channel_get_session( $!channel-handle );
+		}
+
         method stdout(*%options --> Supply) {
             self!std-reader(0, |%options)
         }
