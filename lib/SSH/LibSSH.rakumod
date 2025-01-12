@@ -194,6 +194,7 @@ class SSH::LibSSH {
         has Str $.private-key-file;
         has Str $.private-key-file-password;
         has Int $.timeout;
+        has Str $.bind-addr;
         has UInt $.connect-timeout;
         has UInt $.compression-level where 0 <= * <= 9 = 0;
         has LogLevel $!log-level;
@@ -207,6 +208,7 @@ class SSH::LibSSH {
                         Str :$!private-key-file-password = Str,
                         Int :$!timeout, UInt :$!connect-timeout = 60, LogLevel :$!log-level = None,
                         UInt :$!compression-level where 0 <= * <= 9 = 0,
+                        Str :$!bind-addr = Str,
                         :&!on-server-unknown = &default-server-unknown,
                         :&!on-server-known-changed = &default-server-known-changed,
                         :&!on-server-found-other = &default-server-found-other) {}
@@ -256,6 +258,11 @@ class SSH::LibSSH {
                             error-check($s,
                                 ssh_options_set_long($s, SSH_OPTIONS_TIMEOUT,
                                     CArray[long].new($!connect-timeout)));
+                        }
+
+                        if $!bind-addr {
+                            error-check($s,
+                                ssh_options_set_str($s, SSH_OPTIONS_BINDADDR, $!bind-addr));
                         }
 
                         if $!compression-level > 0 {
