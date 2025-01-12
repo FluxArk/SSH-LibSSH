@@ -1247,6 +1247,8 @@ Copyright 2017 - 2024 Jonathan Worthington
 
 Copyright 2024 Raku Community
 
+Copyright 2025 Denis Kanchev
+
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
 =end pod

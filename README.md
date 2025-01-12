@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/raku-community-modules/SSH-LibSSH/actions/workflows/linux.yml/badge.svg)](https://github.com/raku-community-modules/SSH-LibSSH/actions) [![Actions Status](https://github.com/raku-community-modules/SSH-LibSSH/actions/workflows/macos.yml/badge.svg)](https://github.com/raku-community-modules/SSH-LibSSH/actions)
+[![Actions Status](https://github.com/FluxArk/SSH-LibSSH/actions/workflows/linux.yml/badge.svg)](https://github.com/FluxArk/SSH-LibSSH/actions) [![Actions Status](https://github.com/FluxArk/SSH-LibSSH/actions/workflows/macos.yml/badge.svg)](https://github.com/FluxArk/SSH-LibSSH/actions)
 
 NAME
 ====
@@ -46,6 +46,8 @@ COPYRIGHT AND LICENSE
 Copyright 2017 - 2024 Jonathan Worthington
 
 Copyright 2024 Raku Community
+
+Copyright 2025 Denis Kanchev
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
