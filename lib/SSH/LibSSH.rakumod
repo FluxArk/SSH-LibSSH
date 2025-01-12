@@ -194,6 +194,7 @@ class SSH::LibSSH {
         has Str $.private-key-file;
         has Str $.private-key-file-password;
         has Int $.timeout;
+        has UInt $.connect-timeout;
         has UInt $.compression-level where 0 <= * <= 9 = 0;
         has LogLevel $!log-level;
         has &.on-server-unknown;
@@ -204,7 +205,7 @@ class SSH::LibSSH {
         submethod BUILD(Str :$!host!, Int :$!port = 22, Str :$!user = $*USER.Str,
                         Str :$!private-key-file = Str, Str :$!password = Str,
                         Str :$!private-key-file-password = Str,
-                        Int :$!timeout, LogLevel :$!log-level = None,
+                        Int :$!timeout, UInt :$!connect-timeout = 60, LogLevel :$!log-level = None,
                         UInt :$!compression-level where 0 <= * <= 9 = 0,
                         :&!on-server-unknown = &default-server-unknown,
                         :&!on-server-known-changed = &default-server-known-changed,
@@ -249,6 +250,12 @@ class SSH::LibSSH {
                             error-check($s,
                                 ssh_options_set_int($s, SSH_OPTIONS_LOG_VERBOSITY,
                                     CArray[int32].new($!log-level)));
+                        }
+
+                        if $!connect-timeout {
+                            error-check($s,
+                                ssh_options_set_long($s, SSH_OPTIONS_TIMEOUT,
+                                    CArray[long].new($!connect-timeout)));
                         }
 
                         if $!compression-level > 0 {

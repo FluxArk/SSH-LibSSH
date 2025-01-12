@@ -87,6 +87,8 @@ my enum SSHServerKnown is export (
 sub ssh_new() returns SSHSession is native(&libssh) is export {*}
 sub ssh_free(SSHSession) is native(&libssh) is export {*}
 sub ssh_set_blocking(SSHSession, int32) is native(&libssh) is export {*}
+sub ssh_options_set_long(SSHSession, int32, CArray[long]) returns int32
+    is symbol('ssh_options_set') is native(&libssh) is export {*}
 sub ssh_options_set_int(SSHSession, int32, CArray[int32]) returns int32
     is symbol('ssh_options_set') is native(&libssh) is export {*}
 sub ssh_options_set_str(SSHSession, int32, Str) returns int32
