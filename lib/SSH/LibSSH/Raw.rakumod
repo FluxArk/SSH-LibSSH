@@ -42,6 +42,14 @@ constant SSH_ERROR  is export = -1;    # /* Error of some kind */
 constant SSH_AGAIN  is export = -2;    # /* The nonblocking call must be repeated */
 constant SSH_EOF    is export = -127;  # /* We have already a eof */
 
+constant SSH_AUTH_METHOD_UNKNOWN      is export = 0x0000;
+constant SSH_AUTH_METHOD_NONE         is export = 0x0001;
+constant SSH_AUTH_METHOD_PASSWORD     is export = 0x0002;
+constant SSH_AUTH_METHOD_PUBLICKEY    is export = 0x0004;
+constant SSH_AUTH_METHOD_HOSTBASED    is export = 0x0008;
+constant SSH_AUTH_METHOD_INTERACTIVE  is export = 0x0010;
+constant SSH_AUTH_METHOD_GSSAPI_MIC   is export = 0x0020;
+
 my class SSHSession is repr('CPointer') is export {}
 my enum SSHSessionOptions is export <
     SSH_OPTIONS_HOST
@@ -159,3 +167,5 @@ sub ssh_channel_accept_forward(SSHSession, int32, CArray[int32]) returns SSHChan
 sub ssh_get_error(SSHSession) returns Str is symbol('ssh_get_error')
     is native(&libssh) is export {*}
 sub ssh_channel_get_session(SSHChannel) returns int64 is native(&libssh) is export {*}
+sub ssh_userauth_none(SSHSession, Str) returns int32 is native(&libssh) is export {*}
+sub ssh_userauth_list(SSHSession, Str) returns int32 is native(&libssh) is export {*}

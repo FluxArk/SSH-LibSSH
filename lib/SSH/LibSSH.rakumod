@@ -831,6 +831,92 @@ class SSH::LibSSH {
             await $p;
         }
 
+		method list-auth-methods {
+			my $p = Promise.new;
+			my $v = $p.vow;
+			my $start = now;
+
+			given get-event-loop() -> $loop {
+				$loop.run-on-loop: {
+					with $!session-handle = ssh_new() -> $session {
+						my $result = SSH_AUTH_AGAIN;
+
+                        ssh_set_blocking($session, 0);
+                        error-check($session,
+                            ssh_options_set_str($session, SSH_OPTIONS_HOST, $!host));
+                        error-check($session,
+                            ssh_options_set_int($session, SSH_OPTIONS_PORT, CArray[int32].new($!port)));
+						if $!user {
+							error-check($session,
+								ssh_options_set_str($session, SSH_OPTIONS_USER, $!user));
+						}
+						if $!log-level != None {
+                            error-check($session,
+                                ssh_options_set_int($session, SSH_OPTIONS_LOG_VERBOSITY,
+                                    CArray[int32].new( $!log-level )));
+						}
+                        with $!timeout {
+                            error-check($session,
+                                ssh_options_set_long($session, SSH_OPTIONS_TIMEOUT,
+                                    CArray[long].new( $!timeout )));
+                        }
+
+						my Bool $connected = False;
+						my $res = error-check($session, ssh_connect($session));
+						$connected = True if $res == SSH_OK;
+
+						$loop.add-session($session);
+
+						$loop.add-poller: -> $remove is rw {
+							CATCH {
+								default {
+									$remove = True;
+									self!teardown-session();
+									$v.break($_);
+								}
+							}
+
+
+							my $outcome = !$connected ?? error-check($session, ssh_connect($session)) !! SSH_OK;
+							$connected = True if $outcome == SSH_OK;
+							die X::SSH::LibSSH::Error.new(message => 'Could not connect - timeouted') if $!timeout && now - $start > $!timeout;
+
+							if $outcome == SSH_OK {
+								my $none = error-check($session, ssh_userauth_none($session,Str)); # Must be called before ssh_userauth_list
+								die X::SSH::LibSSH::Error.new(message => 'Failed to authenticate - timeouted') if $!timeout && now - $start > $!timeout;
+
+								if $none != SSH_AUTH_AGAIN {
+									my $result2 = ssh_userauth_list($session,Str);
+									my @auth-methods;
+
+									@auth-methods.push: 'unknown'     if $result2 +& SSH_AUTH_METHOD_UNKNOWN;
+									@auth-methods.push: 'none'        if $result2 +& SSH_AUTH_METHOD_NONE;
+									@auth-methods.push: 'password'    if $result2 +& SSH_AUTH_METHOD_PASSWORD;
+									@auth-methods.push: 'publickey'   if $result2 +& SSH_AUTH_METHOD_PUBLICKEY;
+									@auth-methods.push: 'hostbased'   if $result2 +& SSH_AUTH_METHOD_HOSTBASED;
+									@auth-methods.push: 'interactive' if $result2 +& SSH_AUTH_METHOD_INTERACTIVE;
+									@auth-methods.push: 'gssapi_mic'  if $result2 +& SSH_AUTH_METHOD_GSSAPI_MIC;
+
+									$remove = True;
+									self!teardown-session();
+									$v.keep(@auth-methods);
+								}
+							}
+						}
+
+					} else {
+				        fail X::SSH::LibSSH::Error.new(message => 'Could not allocate SSH session');
+					}
+					CATCH {
+						default {
+							$v.break($_);
+						}
+					}
+				}
+			}
+			$p
+		}
+
         method !teardown-session() {
             with $!session-handle {
                 get-event-loop().remove-session($!session-handle);
@@ -1068,6 +1154,10 @@ class SSH::LibSSH {
     method connect(Str :$host!, *%options --> Promise) {
         Session.new(:$host, |%options).connect
     }
+
+	method list-auth-methods( Str :$host!, Str :$user, UInt :$port = 22, LogLevel :$log-level = None, UInt :$timeout = 10 --> Promise) {
+        Session.new(:$host, :$port, :$log-level, :$timeout, :$user).list-auth-methods
+	}
 
     class LogEntry {
         has LogLevel $.level;
