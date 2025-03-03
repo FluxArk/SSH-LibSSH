@@ -2,6 +2,9 @@ Revision history for SSH-LibSSH
 
 {{$NEXT}}
 
+0.10.2  2025-03-03T13:17:12+02:00
+	- Fix poll task not finishing, introduced in 0.10.1
+
 0.10.1  2025-03-02T16:56:33+02:00
 	- Fix forward fails after the first request
 
