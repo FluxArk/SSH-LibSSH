@@ -216,9 +216,9 @@ class SSH::LibSSH {
         sub default-server-unknown($handler) {
             say "This server is unknown. It presented the public key hash:";
             say $handler.hash;
-            given prompt("Do you want to accpet it (yes/once/NO)?") {
+            given prompt("Do you want to accept it (yes/once/NO)?") {
                 when /:i ^ y[es] $/ { $handler.accept-and-save() }
-                when /:i ^ n[o] $/ { $handler.accept-this-time() }
+                when /:i ^ o[nce] $/ { $handler.accept-this-time() }
                 default { $handler.decline() }
             }
         }
